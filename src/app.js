@@ -22,4 +22,28 @@ app.listen(PORT, () => {
 // setup terminal logger
 app.use(morgan("dev"));
 
-app.use('*', router);
+app.use('/api/v1', router);
+
+app.use('/api/v1', (req, res) => {
+  res.status(200).json({
+    name: process.env.APP_NAME,
+    version: '1.0.0',
+    status: '200 - OK',
+    health: 'RUNNING',
+    mode: process.env.MODE,
+    message: 'please, specify a valid endpoint.',
+  })
+})
+
+app.use('/api', (req, res) => {
+  res.status(404).json({ message: 'please, specify an API version.' })
+})
+
+app.use((req, res) => {
+  res.status(200).json({
+    name: process.env.APP_NAME,
+    status: '200 - OK',
+    health: 'RUNNING',
+    mode: process.env.MODE,
+  })
+})
