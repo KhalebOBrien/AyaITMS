@@ -59,3 +59,38 @@ export const register = async (req, res) => {
     return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error })
   }
 }
+
+export const requestPasswordReset = async (req, res) => {
+  const { email } = req.body
+
+  try {
+    const emailExists = await User.findOneAndUpdate(
+      { email: email },
+      { $set: { password_reset_token: randomId(6, '0') } },
+      { new: true },
+    )
+    
+    if (!updatedUser) {
+      throw Error('user not found')
+    }
+
+    return res.status(StatusCodes.CREATED).json({ success: "LINK SENT! Please check your email for a recovery link." })
+  } catch (err) {
+    const error = handleErrors(err)
+    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error })
+  }
+}
+
+export const regenerateToken = async (req, res) => {
+  try {
+    const token = JwtHandler.createToken({
+      id: res.locals.user,
+      remember_me: res.locals.remember_me,
+    })
+
+    return res.status(StatusCodes.OK).json({ token })
+  } catch (err) {
+    const error = handleErrors(err)
+    return res.status(StatusCodes.BAD_REQUEST).json({ error })
+  }
+}

@@ -9,3 +9,7 @@ export const loginView = (req, res) => {
 export const forgotPasswordView = (req, res) => {
   res.render('auth/forgot-password', { project_name: process.env.APP_NAME })
 }
+
+export const setNewPasswordView = (req, res) => {
+  res.render('auth/set-new-password', { project_name: process.env.APP_NAME })
+}
