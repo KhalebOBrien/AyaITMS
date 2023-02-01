@@ -7,7 +7,11 @@ WebRoutes.get('/', (req, res) => {
   res.render('index', { app_name: process.env.APP_NAME })
 })
 
-WebRoutes.get('/register', registerView)
+WebRoutes.get('/workspace', (req, res) => {
+  res.render('workspace', { app_name: process.env.APP_NAME })
+})
+
+WebRoutes.get('/signup', registerView)
 WebRoutes.get('/login', loginView)
 WebRoutes.get('/forgot-password', forgotPasswordView)
 
