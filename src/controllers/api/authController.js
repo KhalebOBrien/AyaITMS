@@ -3,6 +3,7 @@ import { createToken } from '../../utils/createJwt'
 import { handleErrors } from '../../utils/errorHandler'
 import { hashPassword } from '../../utils/hashPassword'
 import { StatusCodes } from 'http-status-codes'
+import bcrypt from 'bcrypt'
 
 export const login = async (req, res) => {
   const { email, password, remember_me } = req.body

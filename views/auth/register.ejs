@@ -63,6 +63,7 @@
 
     
     <script src="js/jquery.min.js"></script>
+    <script src="js/localStorage.js"></script>
     <script>
         $(window).on("load", function () {
             $(".loader").fadeOut("slow");
@@ -101,6 +102,8 @@
 
                     const data = await res.json();
                     if (data.user?._id) {
+                        const saveToken = addToLocal('token', data.token)
+                        const saveUser = addToLocal('user', data.user)
                         location.assign('/workspace')
                     }
                     if (data.error) {
