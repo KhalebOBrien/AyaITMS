@@ -1,6 +1,7 @@
 import { User } from '../../models/User'
 import { createToken } from '../../utils/createJwt'
 import { handleErrors } from '../../utils/errorHandler'
+import { hashPassword } from '../../utils/hashPassword'
 import { StatusCodes } from 'http-status-codes'
 
 export const login = async (req, res) => {
@@ -37,17 +38,19 @@ export const register = async (req, res) => {
   try {
     const emailExists = await User.findOne({ email: email })
     if (emailExists) {
-      return res.status(StatusCodes.BAD_REQUEST).json({ status: 'error', message: 'Email already exists' })
+      return res.status(StatusCodes.BAD_REQUEST).json({ error: { email: 'Email already exists' }})
     }
+
+    const pwdHash = await hashPassword(password)
 
     const user = await User.create({
       last_name,
       first_name,
       email,
-      password
+      password: pwdHash
     })
 
-    const token = createToken({ id: savedUser._id })
+    const token = createToken({ id: user._id })
 
     return res.status(StatusCodes.CREATED).json({ user, token })
   } catch (err) {
