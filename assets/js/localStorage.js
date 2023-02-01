@@ -15,3 +15,7 @@ const readFromLocal = (key) => {
 const removeFromLocal = (key) => {
   return localStorage.removeItem(key)
 }
+
+const clearLocal = () => {
+  return localStorage.clear()
+}
