@@ -2,8 +2,10 @@ import { User } from '../../models/User'
 import { createToken } from '../../utils/createJwt'
 import { handleErrors } from '../../utils/errorHandler'
 import { hashPassword } from '../../utils/hashPassword'
+import { mailer } from '../../utils/mailer'
 import { StatusCodes } from 'http-status-codes'
 import bcrypt from 'bcrypt'
+import randomId from 'random-id'
 
 export const login = async (req, res) => {
   const { email, password, remember_me } = req.body
@@ -66,19 +68,51 @@ export const requestPasswordReset = async (req, res) => {
   try {
     const emailExists = await User.findOneAndUpdate(
       { email: email },
-      { $set: { password_reset_token: randomId(6, '0') } },
+      { $set: { password_reset_token: randomId(49) } },
       { new: true },
     )
     
-    if (!updatedUser) {
+    if (!emailExists) {
       throw Error('user not found')
     }
+
+    let sender = process.env.EMAIL_NO_REPLY
+    const data = {
+      to: email,
+      from: sender,
+      name: 'Zaza',
+      subject: 'Zaza Password Reset',
+      text: `Follow this link to reset your passowrd: ${process.env.BASE_URL}/set-new-password?token=${emailExists.password_reset_token}`,
+      html: `<h3>Follow this link to reset your passowrd: <a href="${process.env.BASE_URL}/set-new-password?token=${emailExists.password_reset_token}">${process.env.BASE_URL}/set-new-password?token=${emailExists.password_reset_token}</a></h3>`,
+    }
+
+    const mailsender = mailer(data)
 
     return res.status(StatusCodes.CREATED).json({ success: "LINK SENT! Please check your email for a recovery link." })
   } catch (err) {
     const error = handleErrors(err)
     return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error })
   }
+}
+
+export const setNewPassword = async (req, res) => {
+  const { token, new_password } = req.body
+    try {
+      const pwdHash = await hashPassword(new_password)
+
+      const user = await User.findOneAndUpdate(
+        { password_reset_token: token },
+        { $set: { password_reset_token: '', password: pwdHash } },
+      )
+      if (!user) {
+        throw Error('invalid token')
+      }
+
+      return res.status(StatusCodes.OK).json({ success: 'success' })
+    } catch (err) {
+      const error = handleErrors(err)
+      return res.status(StatusCodes.BAD_REQUEST).json({ error })
+    }
 }
 
 export const regenerateToken = async (req, res) => {

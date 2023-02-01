@@ -11,5 +11,5 @@ export const forgotPasswordView = (req, res) => {
 }
 
 export const setNewPasswordView = (req, res) => {
-  res.render('auth/set-new-password', { project_name: process.env.APP_NAME })
+  res.render('auth/set-new-password', { project_name: process.env.APP_NAME, email: res.locals.user.email, token: res.locals.user.password_reset_token })
 }
