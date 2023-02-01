@@ -11,3 +11,7 @@ const addToLocal = (key, data) => {
 const readFromLocal = (key) => {
   return localStorage.getItem(key)
 }
+
+const removeFromLocal = (key) => {
+  return localStorage.removeItem(key)
+}
