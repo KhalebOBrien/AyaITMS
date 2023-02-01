@@ -1,6 +1,6 @@
-import { User } from '../models/User'
-import { createToken } from '../utils/createJwt'
-import { handleErrors } from '../utils/errorHandler'
+import { User } from '../../models/User'
+import { createToken } from '../../utils/createJwt'
+import { handleErrors } from '../../utils/errorHandler'
 import { StatusCodes } from 'http-status-codes'
 
 export const login = async (req, res) => {

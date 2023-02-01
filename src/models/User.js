@@ -39,4 +39,4 @@ userSchema.methods.toJSON = function () {
   return obj
 }
 
-export const User = mongoose.model('user', userSchema)
+export const User = mongoose.model('users', userSchema)
