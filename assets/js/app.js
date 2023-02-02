@@ -1,3 +1,4 @@
+const html = document.querySelector('html')
 const body = document.querySelector('body')
 const sidebar = body.querySelector('nav')
 const toggle = body.querySelector('.toggle')
@@ -12,6 +13,9 @@ toggle.addEventListener('click', () => {
 let getMode = localStorage.getItem("mode");
 if(getMode && getMode ==="dark"){
   body.classList.toggle("dark");
+  html.setAttribute('data-bs-theme', 'dark')
+} else {
+  html.setAttribute('data-bs-theme', 'light')
 }
 
 modeSwitch.addEventListener('click', () => {
@@ -20,9 +24,11 @@ modeSwitch.addEventListener('click', () => {
   if (body.classList.contains('dark')) {
     modeText.innerText = 'Light mode'
     addToLocal('mode', 'dark')
+    html.setAttribute('data-bs-theme', 'dark')
   } else {
     modeText.innerText = 'Dark mode'
     addToLocal('mode', 'light')
+    html.setAttribute('data-bs-theme', 'light')
   }
 })
 

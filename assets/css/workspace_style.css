@@ -13,6 +13,12 @@
   --primary-color-light: #f6f5ff;
   --toggle-color: #ddd;
   --text-color: #707070;
+  --black-light-color: #707070;
+  --border-color: #e6e5e5;
+  --box1-color: #4DA3FF;
+  --box2-color: #FFE6AC;
+  --box3-color: #E7D1FC;
+  --title-icon-color: #fff;
 
   --tran-03: all 0.2s ease;
   --tran-03: all 0.3s ease;
@@ -38,6 +44,13 @@ body.dark {
   --primary-color-light: #3a3b3c;
   --toggle-color: #fff;
   --text-color: #ccc;
+  
+  --black-light-color: #CCC;
+  --border-color: #4D4C4C;
+  --box1-color: #3A3B3C;
+  --box2-color: #3A3B3C;
+  --box3-color: #3A3B3C;
+  --title-icon-color: #CCC;
 }
 
 .sidebar {
@@ -53,6 +66,11 @@ body.dark {
 }
 .sidebar.close {
   width: 88px;
+  opacity:1 !important;
+}
+
+.sidebar ul {
+  padding-left: 0;
 }
 
 .sidebar li {
@@ -61,6 +79,7 @@ body.dark {
   display: flex;
   align-items: center;
   margin-top: 10px;
+  padding: 0;
 }
 
 .sidebar header .image,
@@ -258,7 +277,7 @@ body.dark .switch::before {
   left: 20px;
 }
 
-.home {
+/* .home {
   position: absolute;
   top: 0;
   top: 0;
@@ -267,19 +286,178 @@ body.dark .switch::before {
   width: calc(100% - 250px);
   background-color: var(--body-color);
   transition: var(--tran-05);
-}
-.home .text {
+} */
+.dashboard .text {
   font-size: 30px;
   font-weight: 500;
   color: var(--text-color);
   padding: 12px 60px;
 }
 
-.sidebar.close ~ .home {
+.sidebar.close ~ .dashboard {
   left: 78px;
   height: 100vh;
   width: calc(100% - 78px);
 }
-body.dark .home .text {
+
+body.dark .dashboard .text {
   color: var(--text-color);
+}
+
+.dashboard{
+  position: relative;
+  left: 250px;
+  background-color: var(--body-color);
+  min-height: 100vh;
+  width: calc(100% - 250px);
+  padding: 10px 28px;
+  transition: var(--tran-05);
+}
+nav.close ~ .dashboard{
+  left: 73px;
+  width: calc(100% - 73px);
+}
+.dashboard .top{
+  position: fixed;
+  top: 0;
+  left: 250px;
+  display: flex;
+  width: calc(100% - 250px);
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 14px;
+  background-color: var(--body-color);
+  transition: var(--tran-05);
+  z-index: 10;
+}
+nav.close ~ .dashboard .top{
+  left: 73px;
+  width: calc(100% - 73px);
+}
+.top img{
+  width: 40px;
+  border-radius: 50%;
+}
+.dashboard .dash-content{
+  padding-top: 30px;
+}
+.dash-content .title{
+  display: flex;
+  align-items: center;
+  margin: 40px 0 20px 0;
+}
+.dash-content .title i{
+  position: relative;
+  height: 35px;
+  width: 35px;
+  /* background-color: var(--primary-color); */
+  border-radius: 6px;
+  color: var(--title-icon-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+}
+.dash-content .title .text{
+  font-size: 24px;
+  font-weight: 500;
+  color: var(--text-color);
+  margin-left: 10px;
+}
+#workspacelist a{
+  text-decoration: none;
+  /* color: var(--text-color); */
+}
+
+@media (max-width: 1000px) {
+  nav{
+      width: 73px;
+  }
+  nav.close{
+      width: 250px;
+  }
+  nav .logo_name{
+      opacity: 0;
+      pointer-events: none;
+  }
+  nav.close .logo_name{
+      opacity: 1;
+      pointer-events: auto;
+  }
+  nav li a .link-name{
+      opacity: 0;
+      pointer-events: none;
+  }
+  nav.close li a .link-name{
+      opacity: 1;
+      pointer-events: auto;
+  }
+  nav ~ .dashboard{
+      left: 73px;
+      width: calc(100% - 73px);
+  }
+  nav.close ~ .dashboard{
+      left: 250px;
+      width: calc(100% - 250px);
+  }
+  nav ~ .dashboard .top{
+      left: 73px;
+      width: calc(100% - 73px);
+  }
+  nav.close ~ .dashboard .top{
+      left: 250px;
+      width: calc(100% - 250px);
+  }
+}
+
+@media (max-width: 780px) {
+  .dash-content .boxes .box{
+      width: calc(100% / 2 - 15px);
+      margin-top: 15px;
+  }
+}
+@media (max-width: 560px) {
+  .dash-content .boxes .box{
+      width: 100% ;
+  }
+}
+@media (max-width: 400px) {
+  nav{
+      width: 0px;
+  }
+  nav.close{
+      width: 73px;
+  }
+  nav .logo_name{
+      opacity: 0;
+      pointer-events: none;
+  }
+  nav.close .logo_name{
+      opacity: 0;
+      pointer-events: none;
+  }
+  nav li a .link-name{
+      opacity: 0;
+      pointer-events: none;
+  }
+  nav.close li a .link-name{
+      opacity: 0;
+      pointer-events: none;
+  }
+  nav ~ .dashboard{
+      left: 0;
+      width: 100%;
+  }
+  nav.close ~ .dashboard{
+      left: 73px;
+      width: calc(100% - 73px);
+  }
+  nav ~ .dashboard .top{
+      left: 0;
+      width: 100%;
+  }
+  nav.close ~ .dashboard .top{
+      left: 0;
+      width: 100%;
+  }
 }

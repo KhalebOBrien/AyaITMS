@@ -1,23 +1,149 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-bs-theme="light">
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" name="viewport">
   <title><%= app_name %></title>
+  <link rel="stylesheet" href="css/bootstrap5.3.min.css">
   <link rel="stylesheet" href="css/workspace_style.css">
   <link href='https://unpkg.com/boxicons@2.1.1/css/boxicons.min.css' rel='stylesheet'>
 </head>
 <body>
   <%- include('../partials/__side_navbar.ejs') %>
 
-  <section class="home">
-    <div class="text">WorkSpace</div>
+  <section class="dashboard">
+    <div class="top">
+      <i class=""></i>
+      
+      <img src="imgs/profile.jpg" alt="">
+    </div>
 
-    <div class=""></div>
+    <div class="dash-content">
+      <div class="titl mt-5">
+        <span class="text">WorkSpace</span>
+        <span class="btn btn-primary float-right"  data-bs-toggle="modal" data-bs-target="#creatWorkspaceModal"><i class="bx bx-plus icon"></i> Add</span>
+      </div>
+      <div class="container">
+        <div class="row" id="workspacelist">
+          <div class="col bg-secondary m-2 p-4 text-center rounded-4">
+            <a href="#sdfsdf">
+              <div>
+                <span class="text">Comments</span>
+                <p class="text-muted">3 members</p>
+              </div>
+            </a>
+          </div>
+        </div>
+      </div>
+  </div>
   </section>
 
+  <div class="modal fade" id="creatWorkspaceModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="staticBackdropLabel">Create New Workspace</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form class="needs-validation">
+            <div class="form-group mb-4">
+              <label for="name">Name</label>
+              <input id="name" type="text" class="form-control form-control-lg" name="name" tabindex="1" required autofocus>
+              <div class="name invalid-feedback"></div>
+            </div>
+            <div class="form-group mb-4">
+              <label for="purpose">Purpose</label>
+              <select name="purpose" id="purpose" class="form-control form-control-lg" tabindex="1" required>
+                <option value="personal" selected>Personal</option>
+                <option value="work">Work</option>
+                <option value="school">School</option>
+              </select>
+              <div class="purpose invalid-feedback"></div>
+            </div>
+            <div class="error bg-danger text-white p-2 text-center d-none rounded mb-4"></div>
+            <div class="success bg-success text-white p-2 text-center d-none rounded mb-4"></div>
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary btn-lg btn-block" tabindex="4">Create</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="/js/bootstrap5.3.bundle.js"></script>
   <script src="/js/localStorage.js"></script>
   <script src="/js/app.js"></script>
+  <script>
+    const myModal = document.getElementById('creatWorkspaceModal')
+    const myInput = document.getElementById('name')
+
+    myModal.addEventListener('shown.bs.modal', () => {
+      myInput.focus()
+    })
+
+    const form = document.querySelector('form')
+    const nameErr = document.querySelector('.name.invalid-feedback')
+    const purposeErr = document.querySelector('.purpose.invalid-feedback')
+    const errorDiv = document.querySelector('.error')
+    const successDiv = document.querySelector('.success')
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      errorDiv.classList.add('d-none')
+      successDiv.classList.add('d-none')
+      
+      nameErr.textContent = ''
+      purposeErr.textContent = ''
+      errorDiv.textContent = ''
+      successDiv.textContent = ''
+
+      const req_body = JSON.stringify({ 
+          name: form.name.value,
+          purpose: form.purpose.value,
+      })
+
+      try {
+        const res = await fetch('/api/v1/workspace', {
+          method: 'POST',
+          body: req_body,
+          headers: { 
+            'Content-Type':'application/json',
+            'Authorization':`Bearer ${readFromLocal('token')}`
+          }
+        })
+
+        const data = await res.json();
+        console.log(data)
+        if (data.workspace?._id) {
+          let item = `<div class="col bg-secondary m-2 p-4 text-center rounded-4"><a href="#sdfsdf"><div>
+                          <span class="text">${data.workspace.name}</span>
+                          <p class="text-muted">${data.workspace.members.length} members</p>
+                        </div>
+                      </a>
+                    </div>`
+          
+          document.getElementById('workspacelist').innerHTML += item
+
+          successDiv.classList.remove('d-none')
+          successDiv.textContent = `CREATED: ${data.workspace.name}`
+          setTimeout(() => {
+            successDiv.classList.add('d-none')
+          }, 2000);
+
+          form.name.value = ''
+          form.purpose.value = ''
+        }
+        if (data.error) {
+            nameErr.textContent = data.error.name
+            purposeErr.textContent = data.error.purpose
+        }
+      } catch (err) {
+          console.log(err);
+      }
+    })
+  </script>
 </body>
 </html>
