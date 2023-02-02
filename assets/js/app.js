@@ -9,13 +9,20 @@ toggle.addEventListener('click', () => {
   sidebar.classList.toggle('close')
 })
 
+let getMode = localStorage.getItem("mode");
+if(getMode && getMode ==="dark"){
+  body.classList.toggle("dark");
+}
+
 modeSwitch.addEventListener('click', () => {
   body.classList.toggle('dark')
 
   if (body.classList.contains('dark')) {
     modeText.innerText = 'Light mode'
+    addToLocal('mode', 'dark')
   } else {
     modeText.innerText = 'Dark mode'
+    addToLocal('mode', 'light')
   }
 })
 

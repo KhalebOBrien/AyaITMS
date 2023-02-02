@@ -85,6 +85,13 @@ body.dark {
   transition: var(--tran-03);
 }
 
+.sidebar .icon.icon-flip {
+  transform: scaleY(-4);
+  -moz-transform: scaleY(-1);
+  -webkit-transform: scaleY(-1);
+  -ms-transform: scaleY(-1);
+}
+
 .sidebar .text {
   font-size: 17px;
   font-weight: 500;

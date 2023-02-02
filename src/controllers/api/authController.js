@@ -117,7 +117,7 @@ export const setNewPassword = async (req, res) => {
 
 export const regenerateToken = async (req, res) => {
   try {
-    const token = JwtHandler.createToken({
+    const token = createToken({
       id: res.locals.user,
       remember_me: res.locals.remember_me,
     })
