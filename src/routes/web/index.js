@@ -9,7 +9,7 @@ WebRoutes.get('/', (req, res) => {
 })
 
 WebRoutes.get('/workspace', (req, res) => {
-  res.render('workspace', { app_name: process.env.APP_NAME })
+  res.render('workspace/index', { app_name: process.env.APP_NAME })
 })
 
 WebRoutes.get('/signup', registerView)
