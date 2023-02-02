@@ -108,7 +108,7 @@ export const setNewPassword = async (req, res) => {
         throw Error('invalid token')
       }
 
-      return res.status(StatusCodes.OK).json({ success: 'success' })
+      return res.status(StatusCodes.OK).json({ success: 'SUCCESSFUL' })
     } catch (err) {
       const error = handleErrors(err)
       return res.status(StatusCodes.BAD_REQUEST).json({ error })

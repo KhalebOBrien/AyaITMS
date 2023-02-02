@@ -15,7 +15,7 @@ export const handleErrors = (err) => {
   }
 
   if (err.message === 'invalid token') {
-    return (errors.email = 'Pin does not exist.');
+    return (errors.email = 'Recovery Link expired!');
   }
 
   if (err.message === 'invalid query') {
