@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" name="viewport">
-  <title><%= app_name %></title>
+  <title><%= project_name %></title>
   <link rel="stylesheet" href="css/bootstrap5.3.min.css">
   <link rel="stylesheet" href="css/workspace_style.css">
   <link href='https://unpkg.com/boxicons@2.1.1/css/boxicons.min.css' rel='stylesheet'>
@@ -26,14 +26,6 @@
       </div>
       <div class="container">
         <div class="row" id="workspacelist">
-          <div class="col bg-secondary m-2 p-4 text-center rounded-4">
-            <a href="#sdfsdf">
-              <div>
-                <span class="text">Comments</span>
-                <p class="text-muted">3 members</p>
-              </div>
-            </a>
-          </div>
         </div>
       </div>
   </div>
@@ -118,8 +110,8 @@
         const data = await res.json();
         console.log(data)
         if (data.workspace?._id) {
-          let item = `<div class="col bg-secondary m-2 p-4 text-center rounded-4"><a href="#sdfsdf"><div>
-                          <span class="text">${data.workspace.name}</span>
+          let item = `<div class="workspace-item col m-2 p-4 text-center rounded-4"><a href="#sdfsdf"><div>
+                          <span class="workspace-title">${data.workspace.name}</span>
                           <p class="text-muted">${data.workspace.members.length} members</p>
                         </div>
                       </a>
@@ -144,6 +136,35 @@
           console.log(err);
       }
     })
+
+    const fetchWorkspaces = async () => {
+      console.log('in func');
+      const res = await fetch('/api/v1/workspace', {
+        method: 'GET',
+        headers: { 
+          'Content-Type':'application/json',
+          'Authorization':`Bearer ${readFromLocal('token')}`
+        }
+      })
+
+      const data = await res.json();
+      if (data.workspaces) {
+        console.log('got workspace');
+        let content = '';
+        data.workspaces.map(workspace => {
+          content += `<div class="workspace-item col m-2 p-4 text-center rounded-4"><a href="#sdfsdf"><div>
+                          <span class="workspace-title">${workspace.name}</span>
+                          <p class="text-muted">${workspace.members.length} members</p>
+                        </div>
+                      </a>
+                    </div>`
+        })
+        
+        document.getElementById('workspacelist').innerHTML += content
+      }
+    }
+
+    fetchWorkspaces()
   </script>
 </body>
 </html>
