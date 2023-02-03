@@ -1,7 +1,9 @@
 import express from 'express'
-import { createWorkspace, fetchUserWorkspaces } from '../../../controllers/api/workspaceController'
+import { createWorkspace, fetchUserWorkspaces, fetchWorkspaceById, fetchWorkspaceTaskList } from '../../../controllers/api/workspaceController'
 
-export const workspace = express.Router()
+export const WorkspaceRoutes = express.Router()
 
-workspace.post('/', createWorkspace)
-workspace.get('/', fetchUserWorkspaces)
+WorkspaceRoutes.post('/', createWorkspace)
+WorkspaceRoutes.get('/', fetchUserWorkspaces)
+WorkspaceRoutes.get('/:workspaceId', fetchWorkspaceById)
+WorkspaceRoutes.get('/:workspaceId/tasks', fetchWorkspaceTaskList)

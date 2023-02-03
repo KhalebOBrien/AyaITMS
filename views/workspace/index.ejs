@@ -5,8 +5,8 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" name="viewport">
   <title><%= project_name %></title>
-  <link rel="stylesheet" href="css/bootstrap5.3.min.css">
-  <link rel="stylesheet" href="css/workspace_style.css">
+  <link rel="stylesheet" href="/css/bootstrap5.3.min.css">
+  <link rel="stylesheet" href="/css/workspace_style.css">
   <link href='https://unpkg.com/boxicons@2.1.1/css/boxicons.min.css' rel='stylesheet'>
 </head>
 <body>
@@ -16,11 +16,11 @@
     <div class="top">
       <i class=""></i>
       
-      <img src="imgs/profile.jpg" alt="">
+      <img src="/imgs/profile.jpg" alt="">
     </div>
 
     <div class="dash-content">
-      <div class="titl mt-5">
+      <div class="title mt-5">
         <span class="text">WorkSpace</span>
         <span class="btn btn-primary float-right"  data-bs-toggle="modal" data-bs-target="#creatWorkspaceModal"><i class="bx bx-plus icon"></i> Add</span>
       </div>
@@ -110,7 +110,7 @@
         const data = await res.json();
         console.log(data)
         if (data.workspace?._id) {
-          let item = `<div class="workspace-item col m-2 p-4 text-center rounded-4"><a href="#sdfsdf"><div>
+          let item = `<div class="workspace-item col m-2 p-4 text-center rounded-4"><a href="/workspace/${data.workspace._id}"><div>
                           <span class="workspace-title">${data.workspace.name}</span>
                           <p class="text-muted">${data.workspace.members.length} members</p>
                         </div>
@@ -138,7 +138,6 @@
     })
 
     const fetchWorkspaces = async () => {
-      console.log('in func');
       const res = await fetch('/api/v1/workspace', {
         method: 'GET',
         headers: { 
@@ -149,10 +148,9 @@
 
       const data = await res.json();
       if (data.workspaces) {
-        console.log('got workspace');
         let content = '';
         data.workspaces.map(workspace => {
-          content += `<div class="workspace-item col m-2 p-4 text-center rounded-4"><a href="#sdfsdf"><div>
+          content += `<div class="workspace-item col m-2 p-4 text-center rounded-4"><a href="/workspace/${workspace._id}"><div>
                           <span class="workspace-title">${workspace.name}</span>
                           <p class="text-muted">${workspace.members.length} members</p>
                         </div>

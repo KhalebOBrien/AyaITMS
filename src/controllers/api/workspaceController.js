@@ -36,3 +36,32 @@ export const fetchUserWorkspaces = async (req, res) => {
   }
 }
 
+export const fetchWorkspaceById = async (req, res) => {
+  try {
+    const workspace = await Workspace.findOne({ _id: req.params.workspaceId, owner: res.locals.user })
+
+    if (workspace) {
+      return res.status(StatusCodes.OK).json({ workspace })
+    }
+    
+    return res.status(StatusCodes.NOT_FOUND).json({ error: "workspace not found" })
+  } catch (err) {
+    const error = handleErrors(err)
+    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error })
+  }
+}
+
+export const fetchWorkspaceTaskList = async (req, res) => {
+  try {
+    const workspaces = await Workspace.find({ owner: res.locals.user })
+
+    if (workspaces) {
+      return res.status(StatusCodes.OK).json({ workspaces })
+    }
+    
+    return res.status(StatusCodes.NOT_FOUND).json({ error: "no workspace found" })
+  } catch (err) {
+    const error = handleErrors(err)
+    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error })
+  }
+}

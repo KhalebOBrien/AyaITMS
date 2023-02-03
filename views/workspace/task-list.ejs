@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" name="viewport">
+  <title><%= project_name %></title>
+  <link rel="stylesheet" href="/css/bootstrap5.3.min.css">
+  <link rel="stylesheet" href="/css/workspace_style.css">
+  <link href='https://unpkg.com/boxicons@2.1.1/css/boxicons.min.css' rel='stylesheet'>
+</head>
+<body>
+  <%- include('../partials/__side_navbar.ejs') %>
+
+  <section class="dashboard">
+    <div class="top">
+      <i class=""></i>
+      
+      <img src="/imgs/profile.jpg" alt="">
+    </div>
+
+    <div class="dash-content">
+      <div class="title mt-5">
+        <span class="text" id="workspace-title">WorkSpace Tasklist</span>
+        <span class="btn btn-primary float-right"><i class="bx bx-plus icon"></i> Add</span>
+      </div>
+      <div class="container">
+        <div class="row" id="workspaceTaskList">
+          <div class="col-12 bg-white mb-2">task 1</div>
+          <div class="col-12 bg-white mb-2">task 1</div>
+          <div class="col-12 bg-white mb-2">task 1</div>
+          <div class="col-12 bg-white mb-2">task 1</div>
+          <div class="col-12 bg-white mb-2">task 1</div>
+          <div class="col-12 bg-white mb-2">task 1</div>
+          <div class="col-12 bg-white mb-2">task 1</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script src="/js/bootstrap5.3.bundle.js"></script>
+  <script src="/js/localStorage.js"></script>
+  <script src="/js/app.js"></script>
+  <script>
+    const fetchWorkspaceDetails = async () => {
+      const res = await fetch('/api/v1/workspace/<%=workspaceId%>', {
+        method: 'GET',
+        headers: { 
+          'Content-Type':'application/json',
+          'Authorization':`Bearer ${readFromLocal('token')}`
+        }
+      })
+
+      const data = await res.json();
+      if (data.workspace) {
+        document.getElementById('workspace-title').innerText = `${data.workspace.name} Workspace`
+      }
+    }
+
+    fetchWorkspaceDetails()
+  </script>
+</body>
+</html>

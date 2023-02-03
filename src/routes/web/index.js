@@ -1,6 +1,6 @@
 import express from 'express'
 import { registerView, loginView, forgotPasswordView, setNewPasswordView } from '../../controllers/web/authController'
-import { workspaceView } from '../../controllers/web/workspaceController'
+import { workspaceView, taskListView } from '../../controllers/web/workspaceController'
 import { validateResetLink } from '../../middlewares/validateResetLink'
 
 export const WebRoutes = express.Router()
@@ -15,3 +15,4 @@ WebRoutes.get('/forgot-password', forgotPasswordView)
 WebRoutes.get('/set-new-password', validateResetLink, setNewPasswordView)
 
 WebRoutes.get('/workspace', workspaceView)
+WebRoutes.get('/workspace/:workspaceId', taskListView)
