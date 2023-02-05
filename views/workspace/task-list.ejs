@@ -17,105 +17,50 @@
 
     <div class="dash-content">
       <div class="mt-5 mb-5">
-        <span class="text" id="workspace-title">WorkSpace Tasklist</span>
-        <span class="btn btn-primary float-right"><i class="bx bx-plus icon"></i> Add</span>
+        <span class="text" id="workspace-title">WorkSpace Taskboard</span>
+        <span class="btn btn-primary float-end"  data-bs-toggle="modal" data-bs-target="#creatTaskboardModal"><i class="bx bx-plus icon"></i> Add</span>
       </div>
-      <div class="container px-4">
-        <div class="row gx-3" id="workspacelist">
-          <div class="col text-center">
-          <!-- <div class="col"> -->
-            <div class="p-3 rounded-4 workspace-item">
-              <a href="/workspace/">
-                <div>
-                  <span class="workspace-title">Mine Space</span>
-                  <p class="text-muted">0 members</p>
-                </div>
-              </a>
-            </div>
-          </div>
-          <div class="col text-center">
-          <!-- <div class="col"> -->
-            <div class="p-3 rounded-4 workspace-item">
-              <a href="/workspace/">
-                <div>
-                  <span class="workspace-title">Mine Space</span>
-                  <p class="text-muted">0 members</p>
-                </div>
-              </a>
-            </div>
-          </div>
-          <div class="col text-center">
-          <!-- <div class="col"> -->
-            <div class="p-3 rounded-4 workspace-item">
-              <a href="/workspace/">
-                <div>
-                  <span class="workspace-title">Mine Space</span>
-                  <p class="text-muted">0 members</p>
-                </div>
-              </a>
-            </div>
-          </div>
-          <div class="col text-center">
-          <!-- <div class="col"> -->
-            <div class="p-3 rounded-4 workspace-item">
-              <a href="/workspace/">
-                <div>
-                  <span class="workspace-title">Mine Space</span>
-                  <p class="text-muted">0 members</p>
-                </div>
-              </a>
-            </div>
-          </div>
-          <div class="col text-center">
-          <!-- <div class="col"> -->
-            <div class="p-3 rounded-4 workspace-item">
-              <a href="/workspace/">
-                <div>
-                  <span class="workspace-title">Mine Space</span>
-                  <p class="text-muted">0 members</p>
-                </div>
-              </a>
-            </div>
-          </div>
-          <div class="col text-center">
-          <!-- <div class="col"> -->
-            <div class="p-3 rounded-4 workspace-item">
-              <a href="/workspace/">
-                <div>
-                  <span class="workspace-title">Mine Space</span>
-                  <p class="text-muted">0 members</p>
-                </div>
-              </a>
-            </div>
-          </div>
-          <div class="col text-center">
-          <!-- <div class="col"> -->
-            <div class="p-3 rounded-4 workspace-item">
-              <a href="/workspace/">
-                <div>
-                  <span class="workspace-title">Mine Space</span>
-                  <p class="text-muted">0 members</p>
-                </div>
-              </a>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="container px-4">
-        <div class="row gx-3" id="workspacelist">
-          <div class="col">
-           <div class="p-3 border bg-light">Custom column padding</div>
-          </div>
-          <div class="col">
-            <div class="p-3 border bg-light">Custom column padding</div>
-          </div>
-          <div class="col">
-            <div class="p-3 border bg-light">Custom column padding</div>
-          </div>
+      <div class="container">
+        <div class="row g-3" id="workspaceTaskBoard">
         </div>
       </div>
     </div>
   </section>
+  
+  <div class="modal fade" id="creatTaskboardModal" tabindex="-1" aria-labelledby="creatTaskboardModal" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="staticBackdropLabel">Create New Taskboard</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form class="needs-validation">
+            <div class="form-group mb-4">
+              <label for="name">Title</label>
+              <input id="name" type="text" class="form-control form-control-lg" name="name" tabindex="1" required autofocus>
+              <div class="name invalid-feedback"></div>
+            </div>
+            <div class="form-group mb-4">
+              <label for="purpose">Purpose</label>
+              <select name="purpose" id="purpose" class="form-control form-control-lg" tabindex="1" required>
+                <option value="personal" selected>Personal</option>
+                <option value="work">Work</option>
+                <option value="school">School</option>
+              </select>
+              <div class="purpose invalid-feedback"></div>
+            </div>
+            <div class="error bg-danger text-white p-2 text-center d-none rounded mb-4"></div>
+            <div class="success bg-success text-white p-2 text-center d-none rounded mb-4"></div>
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary btn-lg btn-block" tabindex="4">Create</button>
+            </div>
+            <input type="checkbox" name="" id="">
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <script src="/js/bootstrap5.3.bundle.js"></script>
   <script src="/js/localStorage.js"></script>
@@ -136,8 +81,41 @@
         document.getElementById('workspace-title').innerText = `${data.workspace.name} Workspace`
       }
     }
-
     fetchWorkspaceDetails()
+    
+    const fetchWorkspaceTaskBoards = async () => {
+      const res = await fetch('/api/v1/workspace/<%=workspaceId%>/taskboards', {
+        method: 'GET',
+        headers: { 
+          'Content-Type':'application/json',
+          'Authorization':`Bearer ${readFromLocal('token')}`
+        }
+      })
+      checkAccess(res);
+
+      const data = await res.json();
+      if (data.taskboards) {
+        let content = '';
+        data.taskboards.map(taskboard => {
+          content += `<div class="col-4 text-center">
+                      <div class="p-3 rounded-4" style="background-color: ${taskboard.color};">
+                        <div>
+                          <span class="workspace-title text-white">${taskboard.title}</span>
+                        </div>
+                        <div class="row mt-4 p-3 text-start font-monospace">
+                          <div class="col-12 bg-white mb-2 p-3"><input type="checkbox" class=""> Hello</div>
+                          <div class="col-12 bg-white mb-2 p-3"><input type="checkbox" name="" id=""> Go to market</div>
+                          <div class="col-12 bg-white mb-2 p-3"><input type="checkbox" name="" id=""> Visit Ada</div>
+                          <div class="col-12 bg-white mb-2 p-3"><input type="checkbox" name="" id=""> Code</div>
+                        </div>
+                      </div>
+                    </div>`
+        })
+        
+        document.getElementById('workspaceTaskBoard').innerHTML += content
+      }
+    }
+    fetchWorkspaceTaskBoards()
   </script>
 </body>
 </html>

@@ -1,10 +1,9 @@
-import { Workspace } from "../../models/Workspace"
+import { Task } from '../../models/Task'
+import { TaskBoard } from '../../models/TaskBoard'
 import { handleErrors } from '../../utils/errorHandler'
 import { StatusCodes } from 'http-status-codes'
-import { TaskBoard } from "../../models/TaskBoard"
-import { ETaskStatus } from "../../enums/ETaskStatus"
 
-export const createWorkspace = async (req, res) => {
+export const createTask = async (req, res) => {
   const { name, purpose, members } = req.body
 
   try {
@@ -13,19 +12,19 @@ export const createWorkspace = async (req, res) => {
       name,
       owner: res.locals.user,
       purpose,
-      members
+      members,
     })
 
     if (workspace) {
-      Object.keys(ETaskStatus).map(async board => {
-        let color = (board=='INPROGRESS'?'#ffaf00':'#018b01')
+      Object.keys(ETaskStatus).map(async (board) => {
+        let color = board == 'INPROGRESS' ? '#ffaf00' : '018b01'
         const defaultTaskboard = await TaskBoard.create({
           title: board.toUpperCase(),
           creator: res.locals.user,
           workspace: workspace,
-          color: (board=='TODO'?'#90a4ae':color)
+          color: board == 'TODO' ? '#90a4ae' : color,
         })
-      });
+      })
     }
 
     return res.status(StatusCodes.CREATED).json({ workspace })
@@ -35,30 +34,37 @@ export const createWorkspace = async (req, res) => {
   }
 }
 
-export const fetchUserWorkspaces = async (req, res) => {
+export const fetchAllTaskForCurrentUser = async (req, res) => {
   try {
-    const workspaces = await Workspace.find({ owner: res.locals.user })
+    const tasks = await Task.find({ creator: res.locals.user })
 
-    if (workspaces) {
-      return res.status(StatusCodes.OK).json({ workspaces })
+    if (tasks) {
+      return res.status(StatusCodes.OK).json({ tasksy })
     }
-    
-    return res.status(StatusCodes.NOT_FOUND).json({ error: "no workspace found" })
+
+    return res
+      .status(StatusCodes.NOT_FOUND)
+      .json({ error: 'no workspace found' })
   } catch (err) {
     const error = handleErrors(err)
     return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error })
   }
 }
 
-export const fetchWorkspaceById = async (req, res) => {
+export const fetchTaskById = async (req, res) => {
   try {
-    const workspace = await Workspace.findOne({ _id: req.params.workspaceId, owner: res.locals.user })
+    const task = await Task.findOne({
+      _id: req.params.taskId,
+      creator: res.locals.user,
+    })
 
-    if (workspace) {
-      return res.status(StatusCodes.OK).json({ workspace })
+    if (task) {
+      return res.status(StatusCodes.OK).json({ task })
     }
-    
-    return res.status(StatusCodes.NOT_FOUND).json({ error: "workspace not found" })
+
+    return res
+      .status(StatusCodes.NOT_FOUND)
+      .json({ error: 'task not found' })
   } catch (err) {
     const error = handleErrors(err)
     return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error })
@@ -76,7 +82,7 @@ export const createTaskboard = async (req, res) => {
       creator: res.locals.user,
       workspace: workspaceId,
       color,
-      tasks
+      tasks,
     })
 
     return res.status(StatusCodes.CREATED).json({ taskboard })
@@ -88,28 +94,18 @@ export const createTaskboard = async (req, res) => {
 
 export const fetchWorkspaceTaskBoard = async (req, res) => {
   try {
-    const taskboards = await TaskBoard.find({ workspace: req.params.workspaceId, creator: res.locals.user })
+    const taskboards = await TaskBoard.find({
+      workspace: req.params.workspaceId,
+      creator: res.locals.user,
+    })
 
     if (taskboards) {
       return res.status(StatusCodes.OK).json({ taskboards })
     }
-    
-    return res.status(StatusCodes.NOT_FOUND).json({ error: "no taskboard found for workspace" })
-  } catch (err) {
-    const error = handleErrors(err)
-    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error })
-  }
-}
 
-export const fetchTaskboardById = async (req, res) => {
-  try {
-    const taskboard = await TaskBoard.findOne({ _id: req.params.taskboardId, creator: res.locals.user })
-
-    if (taskboard) {
-      return res.status(StatusCodes.OK).json({ taskboard })
-    }
-    
-    return res.status(StatusCodes.NOT_FOUND).json({ error: "taskboard not found" })
+    return res
+      .status(StatusCodes.NOT_FOUND)
+      .json({ error: 'no taskboard found for workspace' })
   } catch (err) {
     const error = handleErrors(err)
     return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error })
