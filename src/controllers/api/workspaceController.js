@@ -2,6 +2,7 @@ import { Workspace } from "../../models/Workspace"
 import { handleErrors } from '../../utils/errorHandler'
 import { StatusCodes } from 'http-status-codes'
 import { TaskBoard } from "../../models/TaskBoard"
+import { ETaskStatus } from "../../enums/ETaskStatus"
 
 export const createWorkspace = async (req, res) => {
   const { name, purpose, members } = req.body
@@ -14,6 +15,18 @@ export const createWorkspace = async (req, res) => {
       purpose,
       members
     })
+
+    if (workspace) {
+      Object.keys(ETaskStatus).map(async board => {
+        let color = (board=='INPROGRESS'?'#ffaf00':'018b01')
+        const defaultTaskboard = await TaskBoard.create({
+          title: board.toUpperCase(),
+          creator: res.locals.user,
+          workspace: workspace,
+          color: (board=='TODO'?'#90a4ae':color)
+        })
+      });
+    }
 
     return res.status(StatusCodes.CREATED).json({ workspace })
   } catch (err) {
@@ -75,7 +88,7 @@ export const createTaskboard = async (req, res) => {
 
 export const fetchWorkspaceTaskBoard = async (req, res) => {
   try {
-    const taskboards = await TaskBoard.find({ workspace: req.params.workspaceId, owner: res.locals.user })
+    const taskboards = await TaskBoard.find({ workspace: req.params.workspaceId, creator: res.locals.user })
 
     if (taskboards) {
       return res.status(StatusCodes.OK).json({ taskboards })
@@ -90,7 +103,7 @@ export const fetchWorkspaceTaskBoard = async (req, res) => {
 
 export const fetchTaskboardById = async (req, res) => {
   try {
-    const taskboard = await TaskBoard.findOne({ _id: req.params.taskboardId, owner: res.locals.user })
+    const taskboard = await TaskBoard.findOne({ _id: req.params.taskboardId, creator: res.locals.user })
 
     if (taskboard) {
       return res.status(StatusCodes.OK).json({ taskboard })
