@@ -50,4 +50,4 @@ taskboardSchema.methods.toJSON = function () {
   return obj
 }
 
-export const TaskBoard = mongoose.model('taskboard', taskboardSchema)
+export const TaskBoard = mongoose.model('taskboards', taskboardSchema)
