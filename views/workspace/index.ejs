@@ -106,6 +106,7 @@
             'Authorization':`Bearer ${readFromLocal('token')}`
           }
         })
+        checkAccess(res);
 
         const data = await res.json();
         console.log(data)
@@ -145,6 +146,7 @@
           'Authorization':`Bearer ${readFromLocal('token')}`
         }
       })
+      checkAccess(res);
 
       const data = await res.json();
       if (data.workspaces) {

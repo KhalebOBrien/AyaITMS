@@ -36,3 +36,12 @@ logout.addEventListener('click', () => {
   clearLocal()
   location.assign('/login')
 })
+
+const checkAccess = (res) => {
+  console.log(res.status);
+  if (res?.status == 401) {
+    alert("Your access to these system have expired. Please login again to regain access.")
+    clearLocal()
+    location.assign('/login')
+  }
+}
