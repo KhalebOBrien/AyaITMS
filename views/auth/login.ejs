@@ -88,7 +88,7 @@
                 const data = await res.json();
                 if (data.user?._id) {
                     const saveToken = addToLocal('token', data.token)
-                    const saveUser = addToLocal('user', data.user)
+                    const saveUser = addToLocal('user', JSON.stringify(data.user))
                     location.assign('/workspace')
                 }
                 if (data.error) {

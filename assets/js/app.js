@@ -5,14 +5,15 @@ const toggle = body.querySelector('.toggle')
 const modeSwitch = body.querySelector('.toggle-switch')
 const modeText = body.querySelector('.mode-text')
 const logout = body.querySelector('#logout')
+const welcome = body.querySelector('#welcome')
 
 toggle.addEventListener('click', () => {
   sidebar.classList.toggle('close')
 })
 
-let getMode = localStorage.getItem("mode");
-if(getMode && getMode ==="dark"){
-  body.classList.toggle("dark");
+let getMode = localStorage.getItem('mode')
+if (getMode && getMode === 'dark') {
+  body.classList.toggle('dark')
   html.setAttribute('data-bs-theme', 'dark')
 } else {
   html.setAttribute('data-bs-theme', 'light')
@@ -38,10 +39,18 @@ logout.addEventListener('click', () => {
 })
 
 const checkAccess = (res) => {
-  console.log(res.status);
   if (res?.status == 401) {
-    alert("Your access to these system have expired. Please login again to regain access.")
+    alert(
+      'Your access to these system have expired. Please login again to regain access.',
+    )
     clearLocal()
     location.assign('/login')
   }
 }
+
+const setupUserData = () => {
+  const user = JSON.parse(readFromLocal("user"))
+  welcome.innerText = (user) ? `Welcome, ${user.first_name}` : `Hello`
+}
+
+setupUserData()
