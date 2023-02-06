@@ -348,6 +348,11 @@ nav.close ~ .dashboard .top{
   transition: var(--tran-05);
 }
 
+.space-icon {
+  font-size: 18px;
+  cursor: pointer;
+}
+
 @media (max-width: 1000px) {
   nav{
       width: 73px;

@@ -18,7 +18,26 @@
     <div class="dash-content">
       <div class="mt-5 mb-5">
         <span class="text" id="workspace-title">WorkSpace Taskboard</span>
-        <span class="btn btn-primary float-end"  data-bs-toggle="modal" data-bs-target="#creatTaskboardModal"><i class="bx bx-plus icon"></i> Add</span>
+        <div class="float-end">
+          <div class="dropdown">
+            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-expanded="false"><i class="bx bx-menu icon"></i></button>
+            <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="dropdownMenuButton2">
+              <li>
+                <span class="dropdown-item" data-bs-toggle="modal" data-bs-target="#creatTaskboardModal"><i class="bx bx-plus icon"></i> Create Taskboard</span>
+              </li>
+              <li><hr class="dropdown-divider"></li>
+              <li>
+                <span class="dropdown-item" data-bs-toggle="modal" data-bs-target="#updateWorkspaceModal"><i class="bx bx-edit icon"></i> Update WorkSpace</span>
+              </li>
+              <li>
+                <span class="dropdown-item" data-bs-toggle="modal" data-bs-target="#updateWorkspaceModal"><i class="bx bx-edit icon"></i> Add Members</span>
+              </li>
+              <li>
+                <span class="dropdown-item" data-bs-toggle="modal" data-bs-target="#deleteWorkspaceModal"><i class="bx bx-trash icon"></i> Delete WorkSpace</span>
+              </li>
+            </ul>
+          </div>
+        </div>
       </div>
       <div class="container">
         <div class="row g-3" id="workspaceTaskBoard">
@@ -53,10 +72,67 @@
             <div class="error bg-danger text-white p-2 text-center d-none rounded mb-4"></div>
             <div class="success bg-success text-white p-2 text-center d-none rounded mb-4"></div>
             <div class="form-group">
+              <button type="submit" class="btn btn-primary btn-lg btn-block" tabindex="4">Create</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="updateWorkspaceModal" tabindex="-1" aria-labelledby="updateModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="staticBackdropLabel">Update Workspace</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form class="needs-validation">
+            <div class="form-group mb-4">
+              <label for="name">Name</label>
+              <input id="name" type="text" class="form-control form-control-lg" name="name" tabindex="1" value="" required autofocus>
+              <div class="name invalid-feedback"></div>
+            </div>
+            <div class="form-group mb-4">
+              <label for="purpose">Purpose</label>
+              <select name="purpose" id="purpose" class="form-control form-control-lg" tabindex="1" required>
+                <option value="personal" selected>Personal</option>
+                <option value="work">Work</option>
+                <option value="school">School</option>
+              </select>
+              <div class="purpose invalid-feedback"></div>
+            </div>
+            <div class="error bg-danger text-white p-2 text-center d-none rounded mb-4"></div>
+            <div class="success bg-success text-white p-2 text-center d-none rounded mb-4"></div>
+            <div class="form-group">
                 <button type="submit" class="btn btn-primary btn-lg btn-block" tabindex="4">Create</button>
             </div>
-            <input type="checkbox" name="" id="">
           </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="deleteWorkspaceModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-body">
+          <div class="col-12 text-center">
+            <h1 class="text-danger"><i class="bx bx-error icon"></i></h1>
+            <h2>Delete WorkSpace</h2>
+            <p>Deleting a workspace will delete all tasks in the workspace. Also the invited members will be removed from workspace.</p>
+            <div class="form-group mb-4 mt-3 text-start">
+              <label for="deleteWorkspace" class="fw-bolder">Enter the workspace name to proceed.</label>
+              <input type="text" class="form-control form-control-lg" name="deleteWorkspace" id="deleteWorkspace" tabindex="1" required autofocus/>
+              <div class="deleteWorkspace invalid-feedback"></div>
+            </div>
+          </div>
+          <div class="error bg-danger text-white p-2 text-center d-none rounded mb-4"></div>
+          <div class="success bg-success text-white p-2 text-center d-none rounded mb-4"></div>
+          <div class="form-group">
+            <span class="btn btn-danger btn-lg btn-block" tabindex="4">Delete</span>
+          </div>
         </div>
       </div>
     </div>
