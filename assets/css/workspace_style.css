@@ -386,6 +386,10 @@ nav.close ~ .dashboard .top{
   background: #888;
 }
 
+.item-text{
+  cursor: pointer;
+}
+
 @media (max-width: 1000px) {
   nav{
       width: 73px;

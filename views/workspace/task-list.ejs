@@ -188,7 +188,6 @@
         })
         
         document.getElementById('workspaceTaskBoard').innerHTML += content
-        addTaskCreator()
       }
     }
     fetchWorkspaceTaskBoards()
@@ -236,12 +235,11 @@
                         </div>
                         <div class="row mt-4 p-3 text-start font-monospace tlist">
                         </div>
-                        <span class="btn btn-primary btn-sm mt-2 add-task"><i class="bx bx-plus icon"></i> Add Task</span>
+                        <span class="btn btn-primary btn-sm mt-2 add-task"><i class="bx bx-plus icon add-task"></i> Add Task</span>
                       </div>
                     </div>`
           
           document.getElementById('workspaceTaskBoard').innerHTML += item
-          addTaskCreator()
 
           cSuccessDiv.classList.remove('d-none')
           cSuccessDiv.textContent = `CREATED: ${data.workspace.name}`
@@ -261,14 +259,6 @@
       }
     })
     
-    // createTaskField
-    const addTaskCreator = () => {
-      document.querySelectorAll('.add-task').forEach(el => {
-        el.addEventListener('click', (event) => {
-          el.closest('div.tBbody').querySelector('.tlist').innerHTML += `<div class="col-12 bg-white mb-2 p-3 titem"><input type="checkbox" class="checker"> <span class="item-text">Hello</div>`
-        })
-      })
-    }
   </script>
 </body>
 </html>
