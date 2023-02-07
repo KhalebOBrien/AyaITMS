@@ -171,19 +171,35 @@
 
       const data = await res.json();
       if (data.taskboards) {
-        let content = '';
+        let content = contentP1 = contentP2 = contentP3 = '';
         data.taskboards.map(taskboard => {
-          content += `<div class="taskboard-col text-center">
+          contentP1 += `<div class="taskboard-col text-center">
                       <div class="p-3 rounded-4 tBbody" style="background-color: ${taskboard.color};">
                         <input type="hidden" class="taskboard-id" value="${taskboard._id}" />
                         <div>
                           <span class="workspace-title text-white">${taskboard.title}</span>
                         </div>
-                        <div class="row mt-4 p-3 text-start font-monospace tlist">
-                        </div>
+                        <div class="row mt-4 p-3 text-start font-monospace tlist">`
+                          taskboard.tasks.map(task => {
+                            contentP2 += `<div class="col-12 bg-white mb-2 p-3 titem">
+                                            <div class="text-group">
+                                              <input type="checkbox" class="checker">
+                                              <span class="item-text">${task.name}</span>
+                                              <i class="bx bx-trash icon text-danger float-end p-1 item-trash"></i>
+                                            </div>
+                                            <div class="input-group d-none">
+                                              <input type="text" class="form-control bg-white task-input" data-task-id="${task._id}" value="${task.name}">
+                                              <div class="input-group-text bg-primary text-white task-input-save-btn"><i class="bx bx-check icon task-input-save-btn"></i></div>
+                                            </div>
+                                          </div>`
+                          })
+
+          contentP3 += `</div>
                         <span class="btn btn-primary btn-sm mt-2 add-task"><i class="bx bx-plus icon"></i> Add Task</span>
                       </div>
                     </div>`
+
+          content = contentP1 + contentP2 + contentP3
         })
         
         document.getElementById('workspaceTaskBoard').innerHTML += content
@@ -191,22 +207,22 @@
     }
     fetchWorkspaceTaskBoards()
 
-    const fetchTasks = async (taskboardId) => {
-      const res = await fetch('/api/v1/task/<%=workspaceId%>', {
-        method: 'GET',
-        headers: { 
-          'Content-Type':'application/json',
-          'Authorization':`Bearer ${readFromLocal('token')}`
-        }
-      })
-      checkAccess(res);
+    // const fetchTasks = async (taskboardId) => {
+    //   const res = await fetch('/api/v1/task/<%=workspaceId%>', {
+    //     method: 'GET',
+    //     headers: { 
+    //       'Content-Type':'application/json',
+    //       'Authorization':`Bearer ${readFromLocal('token')}`
+    //     }
+    //   })
+    //   checkAccess(res);
 
-      const data = await res.json();
-      if (data.workspace) {
-        document.getElementById('workspace-title').innerText = `${data.workspace.name} Workspace`
-        addToLocal('currentWorkspace', JSON.stringify(data.workspace))
-      }
-    }
+    //   const data = await res.json();
+    //   if (data.workspace) {
+    //     document.getElementById('workspace-title').innerText = `${data.workspace.name} Workspace`
+    //     addToLocal('currentWorkspace', JSON.stringify(data.workspace))
+    //   }
+    // }
 
     const creatBoardForm = document.querySelector('#createBoard')
     const nameErr = document.querySelector('.name.invalid-feedback')
