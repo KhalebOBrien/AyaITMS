@@ -6,6 +6,7 @@ const modeSwitch = body.querySelector('.toggle-switch')
 const modeText = body.querySelector('.mode-text')
 const logout = body.querySelector('#logout')
 const welcome = body.querySelector('#welcome')
+const tlist = body.querySelector('#workspaceTaskBoard')
 
 toggle.addEventListener('click', () => {
   sidebar.classList.toggle('close')
@@ -54,3 +55,9 @@ const setupUserData = () => {
 }
 
 setupUserData()
+
+tlist.addEventListener('click', (e) => {
+  if (e.target.classList.contains('checker')) {
+    e.target.closest('div.titem').querySelector('span.item-text').classList.toggle('text-decoration-line-through')
+  }
+})
