@@ -65,7 +65,8 @@ workspaceTaskBoard.addEventListener('click', (e) => {
     e.target.closest('div.tBbody').querySelector('.tlist').innerHTML += `<div class="col-12 bg-white mb-2 p-3 titem">
         <div class="text-group d-none">
           <input type="checkbox" class="checker">
-          <span class="item-text">Hello</span>
+          <span class="item-text"></span>
+          <i class="bx bx-trash icon text-danger float-end p-1 item-trash"></i>
         </div>
         <div class="input-group active">
           <input type="text" class="form-control bg-white task-input">
@@ -90,7 +91,17 @@ workspaceTaskBoard.addEventListener('click', (e) => {
   }
 
   if (e.target.classList.contains('task-input-save-btn')) {
+    e.target.closest('div.titem').querySelector('span.item-text').innerText = e.target.closest('div.titem').querySelector('.task-input').value
+
     toggleClass(e.target.closest('div.titem').querySelector('.input-group'), 'active', 'd-none')
     toggleClass(e.target.closest('div.titem').querySelector('.text-group'), 'd-none')
+
+    // submit to backend
+  }
+
+  if (e.target.classList.contains('item-trash')) {
+    e.target.closest('div.titem').remove()
+
+    // delete from db too
   }
 })
