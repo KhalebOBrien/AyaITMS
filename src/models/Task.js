@@ -26,10 +26,6 @@ const taskSchema = new mongoose.Schema(
     position: {
       type: Number,
     },
-    deleted: {
-      type: Boolean,
-      default: false,
-    },
   },
   {
     timestamps: {

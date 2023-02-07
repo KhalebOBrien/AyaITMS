@@ -66,7 +66,7 @@ export const fetchWorkspaceById = async (req, res) => {
 }
 
 export const createTaskboard = async (req, res) => {
-  const { title, description, workspaceId, color, tasks } = req.body
+  const { title, description, color, tasks } = req.body
 
   try {
     console.log(res.locals.user)
@@ -74,7 +74,7 @@ export const createTaskboard = async (req, res) => {
       title,
       description,
       creator: res.locals.user,
-      workspace: workspaceId,
+      workspace: req.params.workspaceId,
       color,
       tasks
     })

@@ -353,6 +353,39 @@ nav.close ~ .dashboard .top{
   cursor: pointer;
 }
 
+.taskboard-row {
+  display: flex;
+  overflow-x: scroll;
+  min-height: calc(100vh - 192px);
+}
+
+.taskboard-col {
+  min-width: 400px !important;
+  flex: 1;
+  margin-right: 20px;
+}
+
+.tlist{
+  max-height: calc(86vh - 200px);
+  overflow-y: scroll;
+}
+
+.tlist::-webkit-scrollbar {
+  width: 10px;
+}
+
+.taskboard-row::-webkit-scrollbar {
+  width: 30px;
+}
+
+.tlist::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+.tlist::-webkit-scrollbar-thumb {
+  background: #888;
+}
+
 @media (max-width: 1000px) {
   nav{
       width: 73px;

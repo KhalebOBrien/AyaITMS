@@ -28,10 +28,6 @@ const taskboardSchema = new mongoose.Schema(
         },
       ],
     },
-    deleted: {
-      type: Boolean,
-      default: false,
-    },
   },
   {
     timestamps: {

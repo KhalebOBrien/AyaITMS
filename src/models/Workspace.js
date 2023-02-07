@@ -24,10 +24,6 @@ const workspaceSchema = new mongoose.Schema(
       enum: EWorkspacePurpose,
       default: EWorkspacePurpose.PERSONAL,
     },
-    deleted: {
-      type: Boolean,
-      default: false
-    }
   },
   {
     timestamps: {
