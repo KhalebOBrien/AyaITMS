@@ -60,7 +60,7 @@ const toggleClass = (el, ...args) => {
   args.map(e => el.classList.toggle(e))
 }
 
-workspaceTaskBoard.addEventListener('click', (e) => {
+workspaceTaskBoard?.addEventListener('click', (e) => {
   if (e.target.classList.contains('add-task')) {
     e.target.closest('div.tBbody').querySelector('.tlist').innerHTML += `<div class="col-12 bg-white mb-2 p-3 titem">
         <div class="text-group d-none">
@@ -69,7 +69,7 @@ workspaceTaskBoard.addEventListener('click', (e) => {
           <i class="bx bx-trash icon text-danger float-end p-1 item-trash"></i>
         </div>
         <div class="input-group active">
-          <input type="text" class="form-control bg-white task-input">
+          <input type="text" class="form-control bg-white task-input" data-task-id="">
           <div class="input-group-text bg-primary text-white task-input-save-btn"><i class="bx bx-check icon task-input-save-btn"></i></div>
         </div>
       </div>`
@@ -91,17 +91,32 @@ workspaceTaskBoard.addEventListener('click', (e) => {
   }
 
   if (e.target.classList.contains('task-input-save-btn')) {
-    e.target.closest('div.titem').querySelector('span.item-text').innerText = e.target.closest('div.titem').querySelector('.task-input').value
+    let taskInput = e.target.closest('div.titem').querySelector('.task-input')
+    let tasboardId = e.target.closest('div.tBbody').querySelector('.taskboard-id').value
+    e.target.closest('div.titem').querySelector('span.item-text').innerText = taskInput.value
 
     toggleClass(e.target.closest('div.titem').querySelector('.input-group'), 'active', 'd-none')
     toggleClass(e.target.closest('div.titem').querySelector('.text-group'), 'd-none')
 
     // submit to backend
+    const newtask = async () => {
+      const createdTask = await createOrUpdateTask(tasboardId, taskInput.value, taskInput.dataset.taskId)
+      if (createdTask._id) {
+        taskInput.dataset.taskId = createdTask._id
+      }
+    }
+    newtask()
   }
 
   if (e.target.classList.contains('item-trash')) {
-    e.target.closest('div.titem').remove()
-
+    let taskInput = e.target.closest('div.titem').querySelector('.task-input')
     // delete from db too
+    const removeTask = async () => {
+      await deleteTask(taskInput.dataset.taskId)
+      e.target.closest('div.titem').remove()
+    }
+    removeTask()
   }
 })
+
+

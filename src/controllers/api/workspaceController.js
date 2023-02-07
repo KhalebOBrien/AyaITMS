@@ -88,7 +88,7 @@ export const createTaskboard = async (req, res) => {
 
 export const fetchWorkspaceTaskBoard = async (req, res) => {
   try {
-    const taskboards = await TaskBoard.find({ workspace: req.params.workspaceId, creator: res.locals.user })
+    const taskboards = await TaskBoard.find({ workspace: req.params.workspaceId, creator: res.locals.user }).populate('tasks')
 
     if (taskboards) {
       return res.status(StatusCodes.OK).json({ taskboards })

@@ -20,14 +20,12 @@ const taskboardSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: 'users',
     },
-    tasks: {
-      type: [
-        {
-          type: mongoose.Schema.Types.ObjectId,
-          ref: 'tasks',
-        },
-      ],
-    },
+    tasks: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'tasks',
+      },
+    ],
   },
   {
     timestamps: {
@@ -39,6 +37,12 @@ const taskboardSchema = new mongoose.Schema(
     },
   },
 )
+
+// taskboardSchema.virtual('boardTasks', {
+//   ref: 'task', // The model to use
+//   localField: '_id', // Find tasks where `localField`
+//   foreignField: 'taskboard', // is equal to `foreignField`
+// })
 
 taskboardSchema.methods.toJSON = function () {
   var obj = this.toObject()

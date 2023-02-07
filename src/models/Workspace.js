@@ -11,14 +11,13 @@ const workspaceSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "users"
     },
-    members: {
-      type: [
+    members: [
         { 
           type : mongoose.Schema.Types.ObjectId, 
           ref: "users"
         }
-      ]
-    },
+      ],
+    // },
     purpose: {
       type: String,
       enum: EWorkspacePurpose,
