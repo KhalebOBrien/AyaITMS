@@ -80,8 +80,8 @@ export const requestPasswordReset = async (req, res) => {
     const data = {
       to: email,
       from: sender,
-      name: 'Zaza',
-      subject: 'Zaza Password Reset',
+      name: 'AyaITMS',
+      subject: 'AyaITMS Password Reset',
       text: `Follow this link to reset your passowrd: ${process.env.BASE_URL}/set-new-password?token=${emailExists.password_reset_token}`,
       html: `<h3>Follow this link to reset your passowrd: <a href="${process.env.BASE_URL}/set-new-password?token=${emailExists.password_reset_token}">${process.env.BASE_URL}/set-new-password?token=${emailExists.password_reset_token}</a></h3>`,
     }
